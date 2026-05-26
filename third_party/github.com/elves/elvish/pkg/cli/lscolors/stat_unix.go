@@ -4,9 +4,6 @@ package lscolors
 
 import (
 	"os"
-	"syscall"
 )
 
-func isMultiHardlink(info os.FileInfo) bool {
-	return info.Sys().(*syscall.Stat_t).Nlink > 1
-}
+func isMultiHardlink(info os.FileInfo) bool { _ = "STUB: not implemented"; return false }

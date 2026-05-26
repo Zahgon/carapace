@@ -19,9 +19,8 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-func Execute() error {
-	return rootCmd.Execute()
-}
+func Execute() error { _ = "STUB: not implemented"; return nil }
+
 func init() {
 	carapace.Gen(rootCmd).Standalone()
 

@@ -1,10 +1,6 @@
 package export
 
 import (
-	"encoding/json"
-	"runtime/debug"
-	"sort"
-
 	"github.com/carapace-sh/carapace/internal/common"
 )
 
@@ -14,26 +10,6 @@ type Export struct {
 	Values common.RawValues `json:"values"`
 }
 
-func (e Export) MarshalJSON() ([]byte, error) {
-	sort.Sort(common.ByValue(e.Values))
-	return json.Marshal(&struct {
-		Version string `json:"version"`
-		common.Meta
-		Values common.RawValues `json:"values"`
-	}{
-		Version: version(),
-		Meta:    e.Meta,
-		Values:  e.Values,
-	})
-}
+func (e Export) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func version() string {
-	if info, ok := debug.ReadBuildInfo(); ok {
-		for _, dep := range info.Deps {
-			if dep.Path == "github.com/carapace-sh/carapace" {
-				return dep.Version
-			}
-		}
-	}
-	return "unknown"
-}
+func version() string { _ = "STUB: not implemented"; return "" }

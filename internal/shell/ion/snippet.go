@@ -6,6 +6,4 @@ import (
 )
 
 // Snippet creates the ion completion script.
-func Snippet(cmd *cobra.Command) string {
-	return ""
-}
+func Snippet(cmd *cobra.Command) string { _ = "STUB: not implemented"; return "" }

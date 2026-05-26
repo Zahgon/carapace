@@ -2,9 +2,6 @@
 package export
 
 import (
-	"encoding/json"
-
-	"github.com/carapace-sh/carapace/internal/pflagfork"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -27,60 +24,9 @@ type flag struct {
 	NoOptDefVal string `json:",omitempty"`
 }
 
-func convertFlag(f *pflag.Flag) flag {
-	longhand := ""
-	if (pflagfork.Flag{Flag: f}).Mode() != pflagfork.ShorthandOnly {
-		longhand = f.Name
-	}
+func convertFlag(f *pflag.Flag) flag { _ = "STUB: not implemented"; return *new(flag) }
 
-	noOptDefVal := ""
-	if f.Value.Type() != "bool" {
-		noOptDefVal = f.NoOptDefVal
-	}
-	return flag{
-		Longhand:    longhand,
-		Shorthand:   f.Shorthand,
-		Usage:       f.Usage,
-		Type:        f.Value.Type(),
-		NoOptDefVal: noOptDefVal,
-	}
-}
-
-func convert(cmd *cobra.Command) command {
-	c := command{
-		Name:    cmd.Name(),
-		Short:   cmd.Short,
-		Long:    cmd.Long,
-		Aliases: cmd.Aliases,
-	}
-
-	lflags := make([]flag, 0)
-	cmd.LocalFlags().VisitAll(func(f *pflag.Flag) {
-		lflags = append(lflags, convertFlag(f))
-	})
-	c.LocalFlags = lflags
-
-	pflags := make([]flag, 0)
-	cmd.PersistentFlags().VisitAll(func(f *pflag.Flag) {
-		pflags = append(pflags, convertFlag(f))
-	})
-	c.PersistentFlags = pflags
-
-	subcommands := make([]command, 0)
-	for _, s := range cmd.Commands() {
-		if !s.Hidden {
-			subcommands = append(subcommands, convert(s))
-		}
-	}
-	c.Commands = subcommands
-	return c
-}
+func convert(cmd *cobra.Command) command { _ = "STUB: not implemented"; return *new(command) }
 
 // Snippet exports the command structure as json.
-func Snippet(cmd *cobra.Command) string {
-	out, err := json.Marshal(convert(cmd))
-	if err == nil {
-		return string(out)
-	}
-	return err.Error()
-}
+func Snippet(cmd *cobra.Command) string { _ = "STUB: not implemented"; return "" }

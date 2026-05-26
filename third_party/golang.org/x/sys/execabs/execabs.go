@@ -15,11 +15,7 @@ package execabs
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
-	"path/filepath"
-	"reflect"
-	"unsafe"
 )
 
 // ErrNotFound is the error resulting if a path search failed to find an executable file.
@@ -38,9 +34,7 @@ type Error = exec.Error
 // It is an alias for exec.ExitError.
 type ExitError = exec.ExitError
 
-func relError(file, path string) error {
-	return fmt.Errorf("%s resolves to executable in current directory (.%c%s)", file, filepath.Separator, path)
-}
+func relError(file, path string) error { _ = "STUB: not implemented"; return nil }
 
 // LookPath searches for an executable named file in the directories
 // named by the PATH environment variable. If file contains a slash,
@@ -51,40 +45,22 @@ func relError(file, path string) error {
 // which are used for file names without slashes. If exec.LookPath's
 // PATH lookup would have returned an executable from the current directory,
 // LookPath instead returns an error.
-func LookPath(file string) (string, error) {
-	path, err := exec.LookPath(file)
-	if err != nil {
-		return "", err
-	}
-	if filepath.Base(file) == file && !filepath.IsAbs(path) {
-		return "", relError(file, path)
-	}
-	return path, nil
-}
+func LookPath(file string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func fixCmd(name string, cmd *exec.Cmd) {
-	if filepath.Base(name) == name && !filepath.IsAbs(cmd.Path) {
-		// exec.Command was called with a bare binary name and
-		// exec.LookPath returned a path which is not absolute.
-		// Set cmd.lookPathErr and clear cmd.Path so that it
-		// cannot be run.
-		lookPathErr := (*error)(unsafe.Pointer(reflect.ValueOf(cmd).Elem().FieldByName("lookPathErr").Addr().Pointer()))
-		if *lookPathErr == nil {
-			*lookPathErr = relError(name, cmd.Path)
-		}
-		cmd.Path = ""
-	}
-}
+func fixCmd(name string, cmd *exec.Cmd) { _ = "STUB: not implemented"; return }
+
+// exec.Command was called with a bare binary name and
+// exec.LookPath returned a path which is not absolute.
+// Set cmd.lookPathErr and clear cmd.Path so that it
+// cannot be run.
 
 // CommandContext is like Command but includes a context.
 //
 // The provided context is used to kill the process (by calling os.Process.Kill)
 // if the context becomes done before the command completes on its own.
 func CommandContext(ctx context.Context, name string, arg ...string) *exec.Cmd {
-	cmd := exec.CommandContext(ctx, name, arg...)
-	fixCmd(name, cmd)
-	return cmd
-
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Command returns the Cmd struct to execute the named program with the given arguments.
@@ -95,8 +71,4 @@ func CommandContext(ctx context.Context, name string, arg ...string) *exec.Cmd {
 // If exec.Command would have returned an exec.Cmd configured to run an
 // executable from the current directory, Command instead
 // returns an exec.Cmd that will return an error from Start or Run.
-func Command(name string, arg ...string) *exec.Cmd {
-	cmd := exec.Command(name, arg...)
-	fixCmd(name, cmd)
-	return cmd
-}
+func Command(name string, arg ...string) *exec.Cmd { _ = "STUB: not implemented"; return nil }

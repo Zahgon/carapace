@@ -2,13 +2,6 @@
 
 package ps
 
-import (
-	"bytes"
-	"encoding/binary"
-	"syscall"
-	"unsafe"
-)
-
 // copied from sys/sysctl.h
 const (
 	CTL_KERN           = 1  // "high kernel": proc, limits
@@ -113,148 +106,45 @@ type UnixProcess struct {
 	binary string
 }
 
-func (p *UnixProcess) Pid() int {
-	return p.pid
-}
+func (p *UnixProcess) Pid() int { _ = "STUB: not implemented"; return 0 }
 
-func (p *UnixProcess) PPid() int {
-	return p.ppid
-}
+func (p *UnixProcess) PPid() int { _ = "STUB: not implemented"; return 0 }
 
 func (p *UnixProcess) Executable() string {
-	return p.binary
+	_ = "STUB: not implemented"
+
+	// Refresh reloads all the data associated with this process.
+	return ""
 }
 
-// Refresh reloads all the data associated with this process.
-func (p *UnixProcess) Refresh() error {
-
-	mib := []int32{CTL_KERN, KERN_PROC, KERN_PROC_PID, int32(p.pid)}
-
-	buf, length, err := call_syscall(mib)
-	if err != nil {
-		return err
-	}
-	proc_k := Kinfo_proc{}
-	if length != uint64(unsafe.Sizeof(proc_k)) {
-		return err
-	}
-
-	k, err := parse_kinfo_proc(buf)
-	if err != nil {
-		return err
-	}
-
-	p.ppid, p.pgrp, p.sid, p.binary = copy_params(&k)
-	return nil
-}
+func (p *UnixProcess) Refresh() error { _ = "STUB: not implemented"; return nil }
 
 func copy_params(k *Kinfo_proc) (int, int, int, string) {
-	n := -1
-	for i, b := range k.Ki_comm {
-		if b == 0 {
-			break
-		}
-		n = i + 1
-	}
-	comm := string(k.Ki_comm[:n])
-
-	return int(k.Ki_ppid), int(k.Ki_pgid), int(k.Ki_sid), comm
+	_ = "STUB: not implemented"
+	return 0, 0, 0, ""
 }
 
-func findProcess(pid int) (Process, error) {
-	mib := []int32{CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, int32(pid)}
+func findProcess(pid int) (Process, error) { _ = "STUB: not implemented"; return *new(Process), nil }
 
-	_, _, err := call_syscall(mib)
-	if err != nil {
-		return nil, err
-	}
+func processes() ([]Process, error) { _ = "STUB: not implemented"; return nil, nil }
 
-	return newUnixProcess(pid)
-}
+// get kinfo_proc size
 
-func processes() ([]Process, error) {
-	results := make([]Process, 0, 50)
-
-	mib := []int32{CTL_KERN, KERN_PROC, KERN_PROC_PROC, 0}
-	buf, length, err := call_syscall(mib)
-	if err != nil {
-		return results, err
-	}
-
-	// get kinfo_proc size
-	k := Kinfo_proc{}
-	procinfo_len := int(unsafe.Sizeof(k))
-	count := int(length / uint64(procinfo_len))
-
-	// parse buf to procs
-	for i := range count {
-		b := buf[i*procinfo_len : i*procinfo_len+procinfo_len]
-		k, err := parse_kinfo_proc(b)
-		if err != nil {
-			continue
-		}
-		p, err := newUnixProcess(int(k.Ki_pid))
-		if err != nil {
-			continue
-		}
-		p.ppid, p.pgrp, p.sid, p.binary = copy_params(&k)
-
-		results = append(results, p)
-	}
-
-	return results, nil
-}
+// parse buf to procs
 
 func parse_kinfo_proc(buf []byte) (Kinfo_proc, error) {
-	var k Kinfo_proc
-	br := bytes.NewReader(buf)
-	err := binary.Read(br, binary.LittleEndian, &k)
-	if err != nil {
-		return k, err
-	}
-
-	return k, nil
+	_ = "STUB: not implemented"
+	return *new(Kinfo_proc), nil
 }
 
 func call_syscall(mib []int32) ([]byte, uint64, error) {
-	miblen := uint64(len(mib))
+	_ = "STUB: not implemented"
+	return nil,
 
-	// get required buffer size
-	length := uint64(0)
-	_, _, err := syscall.RawSyscall6(
-		syscall.SYS___SYSCTL,
-		uintptr(unsafe.Pointer(&mib[0])),
-		uintptr(miblen),
-		0,
-		uintptr(unsafe.Pointer(&length)),
-		0,
-		0)
-	if err != 0 {
-		b := make([]byte, 0)
-		return b, length, err
-	}
-	if length == 0 {
-		b := make([]byte, 0)
-		return b, length, err
-	}
-	// get proc info itself
-	buf := make([]byte, length)
-	_, _, err = syscall.RawSyscall6(
-		syscall.SYS___SYSCTL,
-		uintptr(unsafe.Pointer(&mib[0])),
-		uintptr(miblen),
-		uintptr(unsafe.Pointer(&buf[0])),
-		uintptr(unsafe.Pointer(&length)),
-		0,
-		0)
-	if err != 0 {
-		return buf, length, err
-	}
-
-	return buf, length, nil
+		// get required buffer size
+		0, nil
 }
 
-func newUnixProcess(pid int) (*UnixProcess, error) {
-	p := &UnixProcess{pid: pid}
-	return p, p.Refresh()
-}
+// get proc info itself
+
+func newUnixProcess(pid int) (*UnixProcess, error) { _ = "STUB: not implemented"; return nil, nil }

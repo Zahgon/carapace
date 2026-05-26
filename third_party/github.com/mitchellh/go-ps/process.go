@@ -28,13 +28,13 @@ type Process interface {
 // process table, in which case the process table returned might contain
 // ephemeral entities that happened to be running when this was called.
 func Processes() ([]Process, error) {
-	return processes()
+	_ = "STUB: not implemented"
+
+	// FindProcess looks up a single process by pid.
+	//
+	// Process will be nil and error will be nil if a matching process is
+	// not found.
+	return nil, nil
 }
 
-// FindProcess looks up a single process by pid.
-//
-// Process will be nil and error will be nil if a matching process is
-// not found.
-func FindProcess(pid int) (Process, error) {
-	return findProcess(pid)
-}
+func FindProcess(pid int) (Process, error) { _ = "STUB: not implemented"; return *new(Process), nil }

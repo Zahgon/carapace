@@ -7,11 +7,4 @@ type Meta struct {
 	Queries  Queries       `json:"queries,omitempty"`
 }
 
-func (m *Meta) Merge(other Meta) {
-	if other.Usage != "" {
-		m.Usage = other.Usage
-	}
-	m.Nospace.Merge(other.Nospace)
-	m.Messages.Merge(other.Messages)
-	m.Queries.Merge(other.Queries)
-}
+func (m *Meta) Merge(other Meta) { _ = "STUB: not implemented"; return }

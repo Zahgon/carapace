@@ -1,11 +1,5 @@
 package ui
 
-import (
-	"fmt"
-	"strconv"
-	"strings"
-)
-
 // Color represents a color.
 type Color interface {
 	fgSGR() string
@@ -35,10 +29,15 @@ var (
 )
 
 // XTerm256Color returns a color from the xterm 256-color palette.
-func XTerm256Color(i uint8) Color { return xterm256Color(i) }
+func XTerm256Color(i uint8) Color {
+	_ = "STUB: not implemented"
+	return *
 
-// TrueColor returns a 24-bit true color.
-func TrueColor(r, g, b uint8) Color { return trueColor{r, g, b} }
+	// TrueColor returns a 24-bit true color.
+	new(Color)
+}
+
+func TrueColor(r, g, b uint8) Color { _ = "STUB: not implemented"; return *new(Color) }
 
 var colorNames = []string{
 	"black", "red", "green", "yellow",
@@ -67,51 +66,29 @@ var colorByName = map[string]Color{
 
 type ansiColor uint8
 
-func (c ansiColor) fgSGR() string  { return strconv.Itoa(30 + int(c)) }
-func (c ansiColor) bgSGR() string  { return strconv.Itoa(40 + int(c)) }
-func (c ansiColor) String() string { return colorNames[c] }
+func (c ansiColor) fgSGR() string  { _ = "STUB: not implemented"; return "" }
+func (c ansiColor) bgSGR() string  { _ = "STUB: not implemented"; return "" }
+func (c ansiColor) String() string { _ = "STUB: not implemented"; return "" }
 
 type ansiBrightColor uint8
 
-func (c ansiBrightColor) fgSGR() string  { return strconv.Itoa(90 + int(c)) }
-func (c ansiBrightColor) bgSGR() string  { return strconv.Itoa(100 + int(c)) }
-func (c ansiBrightColor) String() string { return "bright-" + colorNames[c] }
+func (c ansiBrightColor) fgSGR() string  { _ = "STUB: not implemented"; return "" }
+func (c ansiBrightColor) bgSGR() string  { _ = "STUB: not implemented"; return "" }
+func (c ansiBrightColor) String() string { _ = "STUB: not implemented"; return "" }
 
 type xterm256Color uint8
 
-func (c xterm256Color) fgSGR() string  { return "38;5;" + strconv.Itoa(int(c)) }
-func (c xterm256Color) bgSGR() string  { return "48;5;" + strconv.Itoa(int(c)) }
-func (c xterm256Color) String() string { return "color" + strconv.Itoa(int(c)) }
+func (c xterm256Color) fgSGR() string  { _ = "STUB: not implemented"; return "" }
+func (c xterm256Color) bgSGR() string  { _ = "STUB: not implemented"; return "" }
+func (c xterm256Color) String() string { _ = "STUB: not implemented"; return "" }
 
 type trueColor struct{ R, G, B uint8 }
 
-func (c trueColor) fgSGR() string { return "38;2;" + c.rgbSGR() }
-func (c trueColor) bgSGR() string { return "48;2;" + c.rgbSGR() }
+func (c trueColor) fgSGR() string { _ = "STUB: not implemented"; return "" }
+func (c trueColor) bgSGR() string { _ = "STUB: not implemented"; return "" }
 
-func (c trueColor) String() string {
-	return fmt.Sprintf("#%02x%02x%02x", c.R, c.G, c.B)
-}
+func (c trueColor) String() string { _ = "STUB: not implemented"; return "" }
 
-func (c trueColor) rgbSGR() string {
-	return fmt.Sprintf("%d;%d;%d", c.R, c.G, c.B)
-}
+func (c trueColor) rgbSGR() string { _ = "STUB: not implemented"; return "" }
 
-func parseColor(name string) Color {
-	if color, ok := colorByName[name]; ok {
-		return color
-	}
-	if strings.HasPrefix(name, "color") {
-		i, err := strconv.Atoi(name[5:])
-		if err == nil && 0 <= i && i < 256 {
-			return XTerm256Color(uint8(i))
-		}
-	} else if strings.HasPrefix(name, "#") && len(name) == 7 {
-		r, rErr := strconv.ParseUint(name[1:3], 16, 8)
-		g, gErr := strconv.ParseUint(name[3:5], 16, 8)
-		b, bErr := strconv.ParseUint(name[5:7], 16, 8)
-		if rErr == nil && gErr == nil && bErr == nil {
-			return TrueColor(uint8(r), uint8(g), uint8(b))
-		}
-	}
-	return nil
-}
+func parseColor(name string) Color { _ = "STUB: not implemented"; return *new(Color) }

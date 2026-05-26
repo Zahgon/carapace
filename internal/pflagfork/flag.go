@@ -1,12 +1,6 @@
 package pflagfork
 
 import (
-	"fmt"
-	"reflect"
-	"strings"
-
-	"github.com/carapace-sh/carapace/pkg/style"
-	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
 
@@ -25,126 +19,22 @@ type Flag struct {
 	Args   []string
 }
 
-func (f Flag) Nargs() int {
-	if field := reflect.ValueOf(f.Flag).Elem().FieldByName("Nargs"); field.IsValid() && field.Kind() == reflect.Int {
-		return int(field.Int())
-	}
-	return 0
-}
+func (f Flag) Nargs() int { _ = "STUB: not implemented"; return 0 }
 
-func (f Flag) Mode() mode {
-	if field := reflect.ValueOf(f.Flag).Elem().FieldByName("Mode"); field.IsValid() && field.Kind() == reflect.Int {
-		return mode(field.Int())
-	}
-	return Default
-}
+func (f Flag) Mode() mode { _ = "STUB: not implemented"; return *new(mode) }
 
-func (f Flag) OptargDelimiter() rune {
-	if field := reflect.ValueOf(f.Flag).Elem().FieldByName("OptargDelimiter"); field.IsValid() && field.Kind() == reflect.Int32 {
-		return (rune(field.Int()))
-	}
-	return '='
-}
+func (f Flag) OptargDelimiter() rune { _ = "STUB: not implemented"; return 0 }
 
-func (f Flag) IsRepeatable() bool {
-	if strings.Contains(f.Value.Type(), "Slice") ||
-		strings.Contains(f.Value.Type(), "Array") ||
-		f.Value.Type() == "count" {
-		return true
-	}
-	return false
-}
+func (f Flag) IsRepeatable() bool { _ = "STUB: not implemented"; return false }
 
-func (f Flag) TakesValue() bool {
-	switch f.Value.Type() {
-	case "bool", "boolSlice", "count":
-		return false
-	default:
-		return true
-	}
-}
+func (f Flag) TakesValue() bool { _ = "STUB: not implemented"; return false }
 
-func (f Flag) IsOptarg() bool {
-	return f.NoOptDefVal != ""
-}
+func (f Flag) IsOptarg() bool { _ = "STUB: not implemented"; return false }
 
-func (f Flag) Style() string {
-	switch {
-	case !f.TakesValue():
-		return style.Carapace.FlagNoArg
-	case f.IsOptarg():
-		return style.Carapace.FlagOptArg
-	case f.Nargs() != 0:
-		return style.Carapace.FlagMultiArg
-	default:
-		return style.Carapace.FlagArg
-	}
-}
+func (f Flag) Style() string { _ = "STUB: not implemented"; return "" }
 
-func (f Flag) Required() bool {
-	if annotation := f.Annotations[cobra.BashCompOneRequiredFlag]; len(annotation) == 1 && annotation[0] == "true" {
-		return true
-	}
-	return false
-}
+func (f Flag) Required() bool { _ = "STUB: not implemented"; return false }
 
-func (f Flag) Definition() string {
-	var definition string
-	switch f.Mode() {
-	case ShorthandOnly:
-		definition = fmt.Sprintf("-%v", f.Shorthand)
-	case NameAsShorthand:
-		definition = fmt.Sprintf("-%v, -%v", f.Shorthand, f.Name)
-	default:
-		switch f.Shorthand {
-		case "":
-			definition = fmt.Sprintf("--%v", f.Name)
-		default:
-			definition = fmt.Sprintf("-%v, --%v", f.Shorthand, f.Name)
-		}
-	}
+func (f Flag) Definition() string { _ = "STUB: not implemented"; return "" }
 
-	if f.Hidden {
-		definition += "&"
-	}
-
-	if f.Required() {
-		definition += "!"
-	}
-
-	if f.IsRepeatable() {
-		definition += "*"
-	}
-
-	switch {
-	case f.IsOptarg():
-		switch f.Value.Type() {
-		case "bool", "boolSlice", "count":
-		default:
-			definition += "?"
-		}
-	case f.TakesValue():
-		definition += "="
-	}
-
-	return definition
-}
-
-func (f Flag) Consumes(arg string) bool {
-	switch {
-	case f.Flag == nil:
-		return false
-	case !f.TakesValue():
-		return false
-	case f.IsOptarg():
-		return false
-	case len(f.Args) == 0:
-		return true
-	case f.Nargs() > 1 && len(f.Args) < f.Nargs():
-		return true
-	case f.Nargs() < 0 && !strings.HasPrefix(arg, "-"):
-		return true
-	default:
-		return false
-	}
-}
+func (f Flag) Consumes(arg string) bool { _ = "STUB: not implemented"; return false }

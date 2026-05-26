@@ -124,20 +124,8 @@ func init() {
 }
 
 func actionMultipartsTest(divider string) carapace.Action {
-	return carapace.ActionMultiParts(divider, func(c carapace.Context) carapace.Action {
-		switch len(c.Parts) {
-		case 0:
-			return actionTestValues().Suffix(divider)
-		case 1:
-			return actionTestValues().FilterParts().Suffix(divider)
-		case 2:
-			return actionTestValues().FilterParts()
-		default:
-			return carapace.ActionValues()
-		}
-	})
+	_ = "STUB: not implemented"
+	return *new(carapace.Action)
 }
 
-func actionTestValues() carapace.Action {
-	return carapace.ActionValuesDescribed("first", "first value", "second", "second value", "third with space", "third value", "fourth", "fourth value")
-}
+func actionTestValues() carapace.Action { _ = "STUB: not implemented"; return *new(carapace.Action) }

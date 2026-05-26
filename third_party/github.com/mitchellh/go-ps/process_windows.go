@@ -3,9 +3,7 @@
 package ps
 
 import (
-	"fmt"
 	"syscall"
-	"unsafe"
 )
 
 // Windows API functions
@@ -45,75 +43,18 @@ type WindowsProcess struct {
 	exe  string
 }
 
-func (p *WindowsProcess) Pid() int {
-	return p.pid
-}
+func (p *WindowsProcess) Pid() int { _ = "STUB: not implemented"; return 0 }
 
-func (p *WindowsProcess) PPid() int {
-	return p.ppid
-}
+func (p *WindowsProcess) PPid() int { _ = "STUB: not implemented"; return 0 }
 
-func (p *WindowsProcess) Executable() string {
-	return p.exe
-}
+func (p *WindowsProcess) Executable() string { _ = "STUB: not implemented"; return "" }
 
 func newWindowsProcess(e *PROCESSENTRY32) *WindowsProcess {
+	_ = "STUB: not implemented"
 	// Find when the string ends for decoding
-	end := 0
-	for {
-		if e.ExeFile[end] == 0 {
-			break
-		}
-		end++
-	}
-
-	return &WindowsProcess{
-		pid:  int(e.ProcessID),
-		ppid: int(e.ParentProcessID),
-		exe:  syscall.UTF16ToString(e.ExeFile[:end]),
-	}
+	return nil
 }
 
-func findProcess(pid int) (Process, error) {
-	ps, err := processes()
-	if err != nil {
-		return nil, err
-	}
+func findProcess(pid int) (Process, error) { _ = "STUB: not implemented"; return *new(Process), nil }
 
-	for _, p := range ps {
-		if p.Pid() == pid {
-			return p, nil
-		}
-	}
-
-	return nil, nil
-}
-
-func processes() ([]Process, error) {
-	handle, _, _ := procCreateToolhelp32Snapshot.Call(
-		0x00000002,
-		0)
-	if handle < 0 {
-		return nil, syscall.GetLastError()
-	}
-	defer procCloseHandle.Call(handle)
-
-	var entry PROCESSENTRY32
-	entry.Size = uint32(unsafe.Sizeof(entry))
-	ret, _, _ := procProcess32First.Call(handle, uintptr(unsafe.Pointer(&entry)))
-	if ret == 0 {
-		return nil, fmt.Errorf("Error retrieving process info.")
-	}
-
-	results := make([]Process, 0, 50)
-	for {
-		results = append(results, newWindowsProcess(&entry))
-
-		ret, _, _ := procProcess32Next.Call(handle, uintptr(unsafe.Pointer(&entry)))
-		if ret == 0 {
-			break
-		}
-	}
-
-	return results, nil
-}
+func processes() ([]Process, error) { _ = "STUB: not implemented"; return nil, nil }

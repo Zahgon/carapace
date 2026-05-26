@@ -3,10 +3,7 @@ package powershell
 
 import (
 	_ "embed"
-	"fmt"
-	"runtime"
 
-	"github.com/carapace-sh/carapace/pkg/uid"
 	"github.com/spf13/cobra"
 )
 
@@ -58,17 +55,4 @@ Register-ArgumentCompleter -Native -ScriptBlock (Get-Item "Function:_%v_complete
 `
 
 // Snippet creates the powershell completion script.
-func Snippet(cmd *cobra.Command) string {
-	prefix := " # "
-	if runtime.GOOS == "windows" {
-		prefix = ""
-	}
-	return fmt.Sprintf(snippet,
-		cmd.Name(),
-		uid.Executable(),
-		uid.Executable(),
-		cmd.Name(),
-		cmd.Name(),
-		prefix,
-		cmd.Name())
-}
+func Snippet(cmd *cobra.Command) string { _ = "STUB: not implemented"; return "" }

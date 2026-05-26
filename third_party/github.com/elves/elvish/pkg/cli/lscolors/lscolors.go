@@ -6,8 +6,6 @@
 package lscolors
 
 import (
-	"path"
-	"strings"
 	"sync"
 )
 
@@ -36,24 +34,9 @@ func init() {
 	lastColorist = parseLsColor(defaultLsColorString)
 }
 
-func GetColorist(lsColorString string) Colorist {
-	lastColoristMutex.Lock()
-	defer lastColoristMutex.Unlock()
+func GetColorist(lsColorString string) Colorist { _ = "STUB: not implemented"; return *new(Colorist) }
 
-	s := getLsColors(lsColorString)
-	if lastLsColors != s {
-		lastLsColors = s
-		lastColorist = parseLsColor(s)
-	}
-	return lastColorist
-}
-
-func getLsColors(lsColorString string) string {
-	if len(lsColorString) == 0 {
-		return defaultLsColorString
-	}
-	return lsColorString
-}
+func getLsColors(lsColorString string) string { _ = "STUB: not implemented"; return "" }
 
 var featureForName = map[string]feature{
 	"rs": featureRegular,
@@ -77,59 +60,10 @@ var featureForName = map[string]feature{
 
 // parseLsColor parses a string in the LS_COLORS format into lsColor. Erroneous
 // fields are silently ignored.
-func parseLsColor(s string) *colorist {
-	lc := &colorist{make(map[feature]string), make(map[string]string)}
-	for spec := range strings.SplitSeq(s, ":") {
-		words := strings.Split(spec, "=")
-		if len(words) != 2 {
-			continue
-		}
-		key, value := words[0], words[1]
-		filterValues := []string{}
-		for splitValue := range strings.SplitSeq(value, ";") {
-			if strings.Count(splitValue, "0") == len(splitValue) {
-				continue
-			}
-			filterValues = append(filterValues, splitValue)
-		}
-		if len(filterValues) == 0 {
-			continue
-		}
-		value = strings.Join(filterValues, ";")
-		if strings.HasPrefix(key, "*.") {
-			lc.styleForExt[key[1:]] = value
-		} else {
-			feature, ok := featureForName[key]
-			if !ok {
-				continue
-			}
-			lc.styleForFeature[feature] = value
-		}
-	}
-	return lc
-}
+func parseLsColor(s string) *colorist { _ = "STUB: not implemented"; return nil }
 
-func (lc *colorist) GetStyle(fname string) string {
-	mh := strings.Trim(lc.styleForFeature[featureMultiHardLink], "0") != ""
-	// TODO Handle error from determineFeature
-	feature, _ := determineFeature(fname, mh)
-	if feature == featureRegular {
-		if ext := path.Ext(fname); ext != "" {
-			if style, ok := lc.styleForExt[ext]; ok {
-				return style
-			}
-		}
-	}
-	return lc.styleForFeature[feature]
-}
+func (lc *colorist) GetStyle(fname string) string { _ = "STUB: not implemented"; return "" }
 
-func (lc *colorist) GetStyleExt(fname string) string {
-	if !strings.HasSuffix(fname, "/") {
-		if ext := path.Ext(fname); ext != "" {
-			if style, ok := lc.styleForExt[ext]; ok {
-				return style
-			}
-		}
-	}
-	return lc.styleForFeature[featureDirectory]
-}
+// TODO Handle error from determineFeature
+
+func (lc *colorist) GetStyleExt(fname string) string { _ = "STUB: not implemented"; return "" }

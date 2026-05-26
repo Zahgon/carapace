@@ -1,8 +1,6 @@
 package tcsh
 
 import (
-	"fmt"
-	"os"
 	"strings"
 
 	"github.com/carapace-sh/carapace/internal/common"
@@ -37,75 +35,33 @@ var quoter = strings.NewReplacer(
 	`\`, `\\`,
 )
 
-func commonPrefix(a, b string) string {
-	i := 0
-	for i < len(a) && i < len(b) && a[i] == b[i] {
-		i++
-	}
-	return a[0:i]
-}
+func commonPrefix(a, b string) string { _ = "STUB: not implemented"; return "" }
 
 func commonDisplayPrefix(values ...common.RawValue) (prefix string) {
-	for index, val := range values {
-		if index == 0 {
-			prefix = val.Display
-		} else {
-			prefix = commonPrefix(prefix, val.Display)
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func commonValuePrefix(values ...common.RawValue) (prefix string) {
-	for index, val := range values {
-		if index == 0 {
-			prefix = val.Value
-		} else {
-			prefix = commonPrefix(prefix, val.Value)
-		}
-	}
-	return
+	_ = "STUB: not implemented"
+	return ""
 }
 
 // ActionRawValues formats values for bash.
 func ActionRawValues(currentWord string, meta common.Meta, values common.RawValues) string {
-	lastSegment := currentWord // last segment of currentWord split by COMP_WORDBREAKS
-
-	for _, r := range values {
-		// TODO optimize
-		if wordbreaks, ok := os.LookupEnv("COMP_WORDBREAKS"); ok {
-			wordbreaks = strings.ReplaceAll(wordbreaks, " ", "")
-			if index := strings.LastIndexAny(currentWord, wordbreaks); index != -1 {
-				r.Value = strings.TrimPrefix(r.Value, currentWord[:index+1])
-				lastSegment = currentWord[index+1:]
-			}
-		}
-	}
-
-	if len(values) > 1 && commonDisplayPrefix(values...) != "" {
-		// When all display values have the same prefix bash will insert is as partial completion (which skips prefixes/formatting).
-		if valuePrefix := commonValuePrefix(values...); lastSegment != valuePrefix {
-			// replace values with common value prefix (`\001` is removed in snippet and compopt nospace will be set)
-			values = common.RawValuesFrom(commonValuePrefix(values...)) // TODO nospaceIndicator
-			//values = common.RawValuesFrom(commonValuePrefix(values...) + nospaceIndicator)
-		} else {
-			// prevent insertion of partial display values by prefixing one with space
-			values[0].Display = " " + values[0].Display
-		}
-	}
-
-	vals := make([]string, len(values))
-	for index, val := range values {
-		if len(values) == 1 {
-			vals[index] = quoter.Replace(sanitizer.Replace(val.Value))
-		} else {
-			if val.Description != "" {
-				// TODO seems actual value needs to be used or it won't be shown if the prefix doesn't match
-				vals[index] = fmt.Sprintf("%v_(%v)", quoter.Replace(sanitizer.Replace(val.Value)), quoter.Replace(strings.ReplaceAll(sanitizer.Replace(val.TrimmedDescription()), " ", "_")))
-			} else {
-				vals[index] = quoter.Replace(sanitizer.Replace(val.Value))
-			}
-		}
-	}
-	return strings.Join(vals, "\n")
+	_ = "STUB: not implemented"
+	return ""
+	// last segment of currentWord split by COMP_WORDBREAKS
 }
+
+// TODO optimize
+
+// When all display values have the same prefix bash will insert is as partial completion (which skips prefixes/formatting).
+
+// replace values with common value prefix (`\001` is removed in snippet and compopt nospace will be set)
+// TODO nospaceIndicator
+//values = common.RawValuesFrom(commonValuePrefix(values...) + nospaceIndicator)
+
+// prevent insertion of partial display values by prefixing one with space
+
+// TODO seems actual value needs to be used or it won't be shown if the prefix doesn't match

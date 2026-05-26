@@ -7,9 +7,7 @@
 package span
 
 import (
-	"encoding/json"
 	"fmt"
-	"path"
 )
 
 // Span represents a source code range in standardized form.
@@ -50,236 +48,80 @@ type Converter interface {
 	ToOffset(line, col int) (int, error)
 }
 
-func New(uri URI, start Point, end Point) Span {
-	s := Span{v: span{URI: uri, Start: start.v, End: end.v}}
-	s.v.clean()
-	return s
-}
+func New(uri URI, start Point, end Point) Span { _ = "STUB: not implemented"; return *new(Span) }
 
-func NewPoint(line, col, offset int) Point {
-	p := Point{v: point{Line: line, Column: col, Offset: offset}}
-	p.v.clean()
-	return p
-}
+func NewPoint(line, col, offset int) Point { _ = "STUB: not implemented"; return *new(Point) }
 
-func Compare(a, b Span) int {
-	if r := CompareURI(a.URI(), b.URI()); r != 0 {
-		return r
-	}
-	if r := comparePoint(a.v.Start, b.v.Start); r != 0 {
-		return r
-	}
-	return comparePoint(a.v.End, b.v.End)
-}
+func Compare(a, b Span) int { _ = "STUB: not implemented"; return 0 }
 
-func ComparePoint(a, b Point) int {
-	return comparePoint(a.v, b.v)
-}
+func ComparePoint(a, b Point) int { _ = "STUB: not implemented"; return 0 }
 
-func comparePoint(a, b point) int {
-	if !a.hasPosition() {
-		if a.Offset < b.Offset {
-			return -1
-		}
-		if a.Offset > b.Offset {
-			return 1
-		}
-		return 0
-	}
-	if a.Line < b.Line {
-		return -1
-	}
-	if a.Line > b.Line {
-		return 1
-	}
-	if a.Column < b.Column {
-		return -1
-	}
-	if a.Column > b.Column {
-		return 1
-	}
-	return 0
-}
+func comparePoint(a, b point) int { _ = "STUB: not implemented"; return 0 }
 
-func (s Span) HasPosition() bool             { return s.v.Start.hasPosition() }
-func (s Span) HasOffset() bool               { return s.v.Start.hasOffset() }
-func (s Span) IsValid() bool                 { return s.v.Start.isValid() }
-func (s Span) IsPoint() bool                 { return s.v.Start == s.v.End }
-func (s Span) URI() URI                      { return s.v.URI }
-func (s Span) Start() Point                  { return Point{s.v.Start} }
-func (s Span) End() Point                    { return Point{s.v.End} }
-func (s *Span) MarshalJSON() ([]byte, error) { return json.Marshal(&s.v) }
-func (s *Span) UnmarshalJSON(b []byte) error { return json.Unmarshal(b, &s.v) }
+func (s Span) HasPosition() bool             { _ = "STUB: not implemented"; return false }
+func (s Span) HasOffset() bool               { _ = "STUB: not implemented"; return false }
+func (s Span) IsValid() bool                 { _ = "STUB: not implemented"; return false }
+func (s Span) IsPoint() bool                 { _ = "STUB: not implemented"; return false }
+func (s Span) URI() URI                      { _ = "STUB: not implemented"; return *new(URI) }
+func (s Span) Start() Point                  { _ = "STUB: not implemented"; return *new(Point) }
+func (s Span) End() Point                    { _ = "STUB: not implemented"; return *new(Point) }
+func (s *Span) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
+func (s *Span) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (p Point) HasPosition() bool             { return p.v.hasPosition() }
-func (p Point) HasOffset() bool               { return p.v.hasOffset() }
-func (p Point) IsValid() bool                 { return p.v.isValid() }
-func (p *Point) MarshalJSON() ([]byte, error) { return json.Marshal(&p.v) }
-func (p *Point) UnmarshalJSON(b []byte) error { return json.Unmarshal(b, &p.v) }
-func (p Point) Line() int {
-	if !p.v.hasPosition() {
-		panic(fmt.Errorf("position not set in %v", p.v))
-	}
-	return p.v.Line
-}
-func (p Point) Column() int {
-	if !p.v.hasPosition() {
-		panic(fmt.Errorf("position not set in %v", p.v))
-	}
-	return p.v.Column
-}
-func (p Point) Offset() int {
-	if !p.v.hasOffset() {
-		panic(fmt.Errorf("offset not set in %v", p.v))
-	}
-	return p.v.Offset
-}
+func (p Point) HasPosition() bool             { _ = "STUB: not implemented"; return false }
+func (p Point) HasOffset() bool               { _ = "STUB: not implemented"; return false }
+func (p Point) IsValid() bool                 { _ = "STUB: not implemented"; return false }
+func (p *Point) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
+func (p *Point) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
+func (p Point) Line() int                     { _ = "STUB: not implemented"; return 0 }
 
-func (p point) hasPosition() bool { return p.Line > 0 }
-func (p point) hasOffset() bool   { return p.Offset >= 0 }
-func (p point) isValid() bool     { return p.hasPosition() || p.hasOffset() }
-func (p point) isZero() bool {
-	return (p.Line == 1 && p.Column == 1) || (!p.hasPosition() && p.Offset == 0)
-}
+func (p Point) Column() int { _ = "STUB: not implemented"; return 0 }
+
+func (p Point) Offset() int { _ = "STUB: not implemented"; return 0 }
+
+func (p point) hasPosition() bool { _ = "STUB: not implemented"; return false }
+func (p point) hasOffset() bool   { _ = "STUB: not implemented"; return false }
+func (p point) isValid() bool     { _ = "STUB: not implemented"; return false }
+func (p point) isZero() bool      { _ = "STUB: not implemented"; return false }
 
 func (s *span) clean() {
-	//this presumes the points are already clean
-	if !s.End.isValid() || (s.End == point{}) {
-		s.End = s.Start
-	}
+	_ = "STUB: not implemented"
+	// this presumes the points are already clean
+	return
 }
 
-func (p *point) clean() {
-	if p.Line < 0 {
-		p.Line = 0
-	}
-	if p.Column <= 0 {
-		if p.Line > 0 {
-			p.Column = 1
-		} else {
-			p.Column = 0
-		}
-	}
-	if p.Offset == 0 && (p.Line > 1 || p.Column > 1) {
-		p.Offset = -1
-	}
-}
+func (p *point) clean() { _ = "STUB: not implemented"; return }
 
 // Format implements fmt.Formatter to print the Location in a standard form.
 // The format produced is one that can be read back in using Parse.
-func (s Span) Format(f fmt.State, c rune) {
-	fullForm := f.Flag('+')
-	preferOffset := f.Flag('#')
-	// we should always have a uri, simplify if it is file format
-	//TODO: make sure the end of the uri is unambiguous
-	uri := string(s.v.URI)
-	if c == 'f' {
-		uri = path.Base(uri)
-	} else if !fullForm {
-		uri = s.v.URI.Filename()
-	}
-	fmt.Fprint(f, uri)
-	if !s.IsValid() || (!fullForm && s.v.Start.isZero() && s.v.End.isZero()) {
-		return
-	}
-	// see which bits of start to write
-	printOffset := s.HasOffset() && (fullForm || preferOffset || !s.HasPosition())
-	printLine := s.HasPosition() && (fullForm || !printOffset)
-	printColumn := printLine && (fullForm || (s.v.Start.Column > 1 || s.v.End.Column > 1))
-	fmt.Fprint(f, ":")
-	if printLine {
-		fmt.Fprintf(f, "%d", s.v.Start.Line)
-	}
-	if printColumn {
-		fmt.Fprintf(f, ":%d", s.v.Start.Column)
-	}
-	if printOffset {
-		fmt.Fprintf(f, "#%d", s.v.Start.Offset)
-	}
-	// start is written, do we need end?
-	if s.IsPoint() {
-		return
-	}
-	// we don't print the line if it did not change
-	printLine = fullForm || (printLine && s.v.End.Line > s.v.Start.Line)
-	fmt.Fprint(f, "-")
-	if printLine {
-		fmt.Fprintf(f, "%d", s.v.End.Line)
-	}
-	if printColumn {
-		if printLine {
-			fmt.Fprint(f, ":")
-		}
-		fmt.Fprintf(f, "%d", s.v.End.Column)
-	}
-	if printOffset {
-		fmt.Fprintf(f, "#%d", s.v.End.Offset)
-	}
-}
+func (s Span) Format(f fmt.State, c rune) { _ = "STUB: not implemented"; return }
+
+// we should always have a uri, simplify if it is file format
+//TODO: make sure the end of the uri is unambiguous
+
+// see which bits of start to write
+
+// start is written, do we need end?
+
+// we don't print the line if it did not change
 
 func (s Span) WithPosition(c Converter) (Span, error) {
-	if err := s.update(c, true, false); err != nil {
-		return Span{}, err
-	}
-	return s, nil
+	_ = "STUB: not implemented"
+	return *new(Span), nil
 }
 
 func (s Span) WithOffset(c Converter) (Span, error) {
-	if err := s.update(c, false, true); err != nil {
-		return Span{}, err
-	}
-	return s, nil
+	_ = "STUB: not implemented"
+	return *new(Span), nil
 }
 
-func (s Span) WithAll(c Converter) (Span, error) {
-	if err := s.update(c, true, true); err != nil {
-		return Span{}, err
-	}
-	return s, nil
-}
+func (s Span) WithAll(c Converter) (Span, error) { _ = "STUB: not implemented"; return *new(Span), nil }
 
 func (s *Span) update(c Converter, withPos, withOffset bool) error {
-	if !s.IsValid() {
-		return fmt.Errorf("cannot add information to an invalid span")
-	}
-	if withPos && !s.HasPosition() {
-		if err := s.v.Start.updatePosition(c); err != nil {
-			return err
-		}
-		if s.v.End.Offset == s.v.Start.Offset {
-			s.v.End = s.v.Start
-		} else if err := s.v.End.updatePosition(c); err != nil {
-			return err
-		}
-	}
-	if withOffset && (!s.HasOffset() || (s.v.End.hasPosition() && !s.v.End.hasOffset())) {
-		if err := s.v.Start.updateOffset(c); err != nil {
-			return err
-		}
-		if s.v.End.Line == s.v.Start.Line && s.v.End.Column == s.v.Start.Column {
-			s.v.End.Offset = s.v.Start.Offset
-		} else if err := s.v.End.updateOffset(c); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (p *point) updatePosition(c Converter) error {
-	line, col, err := c.ToPosition(p.Offset)
-	if err != nil {
-		return err
-	}
-	p.Line = line
-	p.Column = col
-	return nil
-}
+func (p *point) updatePosition(c Converter) error { _ = "STUB: not implemented"; return nil }
 
-func (p *point) updateOffset(c Converter) error {
-	offset, err := c.ToOffset(p.Line, p.Column)
-	if err != nil {
-		return err
-	}
-	p.Offset = offset
-	return nil
-}
+func (p *point) updateOffset(c Converter) error { _ = "STUB: not implemented"; return nil }

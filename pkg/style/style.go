@@ -2,8 +2,6 @@
 package style
 
 import (
-	"strings"
-
 	"github.com/carapace-sh/carapace/third_party/github.com/elves/elvish/pkg/ui"
 )
 
@@ -55,23 +53,15 @@ var (
 )
 
 // Of combines different styles.
-func Of(s ...string) string { return strings.TrimSpace(strings.Join(s, " ")) }
+func Of(s ...string) string { _ = "STUB: not implemented"; return "" }
 
 // XTerm256Color returns a color from the xterm 256-color palette.
-func XTerm256Color(i uint8) string { return ui.XTerm256Color(i).String() }
+func XTerm256Color(i uint8) string { _ = "STUB: not implemented"; return "" }
 
 // TrueColor returns a 24-bit true color.
-func TrueColor(r, g, b uint8) string { return ui.TrueColor(r, g, b).String() }
+func TrueColor(r, g, b uint8) string { _ = "STUB: not implemented"; return "" }
 
 // SGR returns the SGR sequence for given style.
-func SGR(s string) string { return Parse(s).SGR() }
+func SGR(s string) string { _ = "STUB: not implemented"; return "" }
 
-func Parse(s string) ui.Style {
-	stylings := make([]ui.Styling, 0)
-	for word := range strings.SplitSeq(s, " ") {
-		if styling := ui.ParseStyling(word); styling != nil {
-			stylings = append(stylings, styling)
-		}
-	}
-	return ui.ApplyStyling(ui.Style{}, stylings...)
-}
+func Parse(s string) ui.Style { _ = "STUB: not implemented"; return *new(ui.Style) }

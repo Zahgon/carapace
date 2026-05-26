@@ -1,27 +1,21 @@
 package ui
 
-import (
-	"strings"
-)
-
 // Styling specifies how to change a Style. It can also be applied to a Segment
 // or Text.
 type Styling interface{ transform(*Style) }
 
 // ApplyStyling returns a new Style with the given Styling's applied.
-func ApplyStyling(s Style, ts ...Styling) Style {
-	for _, t := range ts {
-		if t != nil {
-			t.transform(&s)
-		}
-	}
-	return s
-}
+func ApplyStyling(s Style, ts ...Styling) Style { _ = "STUB: not implemented"; return *new(Style) }
 
 // Stylings joins several transformers into one.
-func Stylings(ts ...Styling) Styling { return jointStyling(ts) }
+func Stylings(ts ...Styling) Styling {
+	_ = "STUB: not implemented"
+	return *
 
-// Common stylings.
+	// Common stylings.
+	new(Styling)
+}
+
 var (
 	Reset Styling = reset{}
 
@@ -88,10 +82,15 @@ var (
 )
 
 // Fg returns a Styling that sets the foreground color.
-func Fg(c Color) Styling { return setForeground{c} }
+func Fg(c Color) Styling {
+	_ = "STUB: not implemented"
+	return *
 
-// Bg returns a Styling that sets the background color.
-func Bg(c Color) Styling { return setBackground{c} }
+	// Bg returns a Styling that sets the background color.
+	new(Styling)
+}
+
+func Bg(c Color) Styling { _ = "STUB: not implemented"; return *new(Styling) }
 
 type reset struct{}
 type setForeground struct{ c Color }
@@ -100,12 +99,12 @@ type boolOn struct{ f boolField }
 type boolOff struct{ f boolField }
 type boolToggle struct{ f boolField }
 
-func (reset) transform(s *Style)           { *s = Style{} }
-func (t setForeground) transform(s *Style) { s.Foreground = t.c }
-func (t setBackground) transform(s *Style) { s.Background = t.c }
-func (t boolOn) transform(s *Style)        { *t.f.get(s) = true }
-func (t boolOff) transform(s *Style)       { *t.f.get(s) = false }
-func (t boolToggle) transform(s *Style)    { p := t.f.get(s); *p = !*p }
+func (reset) transform(s *Style)           { _ = "STUB: not implemented"; return }
+func (t setForeground) transform(s *Style) { _ = "STUB: not implemented"; return }
+func (t setBackground) transform(s *Style) { _ = "STUB: not implemented"; return }
+func (t boolOn) transform(s *Style)        { _ = "STUB: not implemented"; return }
+func (t boolOff) transform(s *Style)       { _ = "STUB: not implemented"; return }
+func (t boolToggle) transform(s *Style)    { _ = "STUB: not implemented"; return }
 
 type boolField interface{ get(*Style) *bool }
 
@@ -116,20 +115,16 @@ type underlinedField struct{}
 type blinkField struct{}
 type inverseField struct{}
 
-func (boldField) get(s *Style) *bool       { return &s.Bold }
-func (dimField) get(s *Style) *bool        { return &s.Dim }
-func (italicField) get(s *Style) *bool     { return &s.Italic }
-func (underlinedField) get(s *Style) *bool { return &s.Underlined }
-func (blinkField) get(s *Style) *bool      { return &s.Blink }
-func (inverseField) get(s *Style) *bool    { return &s.Inverse }
+func (boldField) get(s *Style) *bool       { _ = "STUB: not implemented"; return nil }
+func (dimField) get(s *Style) *bool        { _ = "STUB: not implemented"; return nil }
+func (italicField) get(s *Style) *bool     { _ = "STUB: not implemented"; return nil }
+func (underlinedField) get(s *Style) *bool { _ = "STUB: not implemented"; return nil }
+func (blinkField) get(s *Style) *bool      { _ = "STUB: not implemented"; return nil }
+func (inverseField) get(s *Style) *bool    { _ = "STUB: not implemented"; return nil }
 
 type jointStyling []Styling
 
-func (t jointStyling) transform(s *Style) {
-	for _, t := range t {
-		t.transform(s)
-	}
-}
+func (t jointStyling) transform(s *Style) { _ = "STUB: not implemented"; return }
 
 // ParseStyling parses a text representation of Styling, which are kebab
 // case counterparts to the names of the builtin Styling's. For example,
@@ -139,20 +134,7 @@ func (t jointStyling) transform(s *Style) {
 // Stylings.
 //
 // If the given string is invalid, ParseStyling returns nil.
-func ParseStyling(s string) Styling {
-	if !strings.ContainsRune(s, ' ') {
-		return parseOneStyling(s)
-	}
-	var joint jointStyling
-	for subs := range strings.SplitSeq(s, " ") {
-		parsed := parseOneStyling(subs)
-		if parsed == nil {
-			return nil
-		}
-		joint = append(joint, parseOneStyling(subs))
-	}
-	return joint
-}
+func ParseStyling(s string) Styling { _ = "STUB: not implemented"; return *new(Styling) }
 
 var boolFields = map[string]boolField{
 	"bold":       boldField{},
@@ -163,35 +145,4 @@ var boolFields = map[string]boolField{
 	"inverse":    inverseField{},
 }
 
-func parseOneStyling(name string) Styling {
-	switch {
-	case name == "default" || name == "fg-default":
-		return FgDefault
-	case strings.HasPrefix(name, "fg-"):
-		if color := parseColor(name[len("fg-"):]); color != nil {
-			return setForeground{color}
-		}
-	case name == "bg-default":
-		return BgDefault
-	case strings.HasPrefix(name, "bg-"):
-		if color := parseColor(name[len("bg-"):]); color != nil {
-			return setBackground{color}
-		}
-	case strings.HasPrefix(name, "no-"):
-		if f, ok := boolFields[name[len("no-"):]]; ok {
-			return boolOff{f}
-		}
-	case strings.HasPrefix(name, "toggle-"):
-		if f, ok := boolFields[name[len("toggle-"):]]; ok {
-			return boolToggle{f}
-		}
-	default:
-		if f, ok := boolFields[name]; ok {
-			return boolOn{f}
-		}
-		if color := parseColor(name); color != nil {
-			return setForeground{color}
-		}
-	}
-	return nil
-}
+func parseOneStyling(name string) Styling { _ = "STUB: not implemented"; return *new(Styling) }

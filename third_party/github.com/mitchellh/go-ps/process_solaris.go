@@ -2,12 +2,6 @@
 
 package ps
 
-import (
-	"encoding/binary"
-	"fmt"
-	"os"
-)
-
 type ushort_t uint16
 
 type id_t int32
@@ -66,31 +60,6 @@ type psinfo_t struct {
 	Pr_lwp      [128]byte /* information for representative lwp */
 }
 
-func (p *UnixProcess) Refresh() error {
-	var psinfo psinfo_t
+func (p *UnixProcess) Refresh() error { _ = "STUB: not implemented"; return nil }
 
-	path := fmt.Sprintf("/proc/%d/psinfo", p.pid)
-	fh, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-	defer fh.Close()
-
-	err = binary.Read(fh, binary.LittleEndian, &psinfo)
-	if err != nil {
-		return err
-	}
-
-	p.ppid = int(psinfo.Pr_ppid)
-	p.binary = toString(psinfo.Pr_fname[:], 16)
-	return nil
-}
-
-func toString(array []byte, len int) string {
-	for i := range len {
-		if array[i] == 0 {
-			return string(array[:i])
-		}
-	}
-	return string(array[:])
-}
+func toString(array []byte, len int) string { _ = "STUB: not implemented"; return "" }

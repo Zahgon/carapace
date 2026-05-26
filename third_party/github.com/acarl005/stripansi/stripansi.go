@@ -8,9 +8,4 @@ const ansi = "[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)
 
 var re *regexp.Regexp
 
-func Strip(str string) string {
-	if re == nil {
-		re = regexp.MustCompile(ansi)
-	}
-	return re.ReplaceAllString(str, "")
-}
+func Strip(str string) string { _ = "STUB: not implemented"; return "" }

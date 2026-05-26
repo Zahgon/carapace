@@ -1,9 +1,5 @@
 package style
 
-import (
-	"github.com/carapace-sh/carapace/internal/config"
-)
-
 // Register a style configuration
 //
 //	var Carapace = struct {
@@ -17,12 +13,12 @@ import (
 //	func init() {
 //		Register("carapace", &Carapace)
 //	}
-func Register(name string, i any) { config.RegisterStyle(name, i) }
+func Register(name string, i any) { _ = "STUB: not implemented"; return }
 
 // Set a style
 //
 //	Set("carapace.Value", "bold magenta")
-func Set(key, value string) error { return config.SetStyle(key, value) }
+func Set(key, value string) error { _ = "STUB: not implemented"; return nil }
 
 type carapace struct {
 	Value       string `description:"default style for values" tag:"core styles"`
@@ -101,36 +97,7 @@ var Carapace = carapace{
 }
 
 // Highlight returns the style for given level (0..n)
-func (c carapace) Highlight(level int) string {
-	switch level {
-	case 0:
-		return c.Highlight1
-	case 1:
-		return c.Highlight2
-	case 2:
-		return c.Highlight3
-	case 3:
-		return c.Highlight4
-	case 4:
-		return c.Highlight5
-	case 5:
-		return c.Highlight6
-	case 6:
-		return c.Highlight7
-	case 7:
-		return c.Highlight8
-	case 8:
-		return c.Highlight9
-	case 9:
-		return c.Highlight10
-	case 10:
-		return c.Highlight11
-	case 11:
-		return c.Highlight12
-	default:
-		return Default
-	}
-}
+func (c carapace) Highlight(level int) string { _ = "STUB: not implemented"; return "" }
 
 func init() {
 	Register("carapace", &Carapace)

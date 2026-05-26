@@ -1,10 +1,5 @@
 package parse
 
-import (
-	"unicode"
-	"unicode/utf8"
-)
-
 // eof rune sent when end of file is reached
 var eof = rune(0)
 
@@ -68,227 +63,82 @@ func (s *scanner) init(buf string) {
 
 // read returns the next unicode character. It returns eof at
 // the end of the string buffer.
-func (s *scanner) read() rune {
-	if s.pos >= len(s.buf) {
-		s.width = 0
-		return eof
-	}
-	r, w := utf8.DecodeRuneInString(s.buf[s.pos:])
-	s.width = w
-	s.pos += s.width
-	return r
-}
+func (s *scanner) read() rune { _ = "STUB: not implemented"; return 0 }
 
 func (s *scanner) unread() {
-	s.pos -= s.width
+	_ = "STUB: not implemented"
+
+	// skip skips over the curring unicode character in the buffer
+	// by slicing and removing from the buffer.
+	return
 }
 
-// skip skips over the curring unicode character in the buffer
-// by slicing and removing from the buffer.
-func (s *scanner) skip() {
-	l := s.buf[:s.pos-1]
-	r := s.buf[s.pos:]
-	s.buf = l + r
-}
+func (s *scanner) skip() { _ = "STUB: not implemented"; return }
 
 // peek returns the next unicode character in the buffer without
 // advancing the scanner. It returns eof if the scanner's position
 // is at the last character of the source.
-func (s *scanner) peek() rune {
-	r := s.read()
-	s.unread()
-	return r
-}
+func (s *scanner) peek() rune { _ = "STUB: not implemented"; return 0 }
 
 // string returns the string corresponding to the most recently
 // scanned token. Valid after calling scan().
-func (s *scanner) string() string {
-	return s.buf[s.start:s.pos]
-}
+func (s *scanner) string() string { _ = "STUB: not implemented"; return "" }
 
 // tests if the bit exists for a given character bit
-func (s *scanner) shouldEscape(character byte) bool {
-	return s.escapeChars&character != 0
-}
+func (s *scanner) shouldEscape(character byte) bool { _ = "STUB: not implemented"; return false }
 
 // scan reads the next token or Unicode character from source and
 // returns it. It returns EOF at the end of the source.
-func (s *scanner) scan() token {
-	s.start = s.pos
-	r := s.read()
-	switch {
-	case r == eof:
-		return tokenEOF
-	case s.scanLbrack(r):
-		return tokenLbrack
-	case s.scanRbrack(r):
-		return tokenRbrack
-	case s.scanIdent(r):
-		return tokenIdent
-	}
-	return tokenIllegal
-}
+func (s *scanner) scan() token { _ = "STUB: not implemented"; return *new(token) }
 
 // scanIdent reads the next token or Unicode character from source
 // and returns true if the Ident character is accepted.
-func (s *scanner) scanIdent(r rune) bool {
-	if s.mode&scanIdent == 0 {
-		return false
-	}
-	if s.scanEscaped(r) {
-		s.skip()
-	} else if !s.accept(r, s.pos-s.start) {
-		return false
-	}
-loop:
-	for {
-		r := s.read()
-		switch {
-		case r == eof:
-			s.unread()
-			break loop
-		case s.scanLbrack(r):
-			s.unread()
-			s.unread()
-			break loop
-		}
-		if s.scanEscaped(r) {
-			s.skip()
-			continue
-		}
-		if !s.accept(r, s.pos-s.start) {
-			s.unread()
-			break loop
-		}
-	}
-	return true
-}
+func (s *scanner) scanIdent(r rune) bool { _ = "STUB: not implemented"; return false }
 
 // scanLbrack reads the next token or Unicode character from source
 // and returns true if the open bracket is encountered.
-func (s *scanner) scanLbrack(r rune) bool {
-	if s.mode&scanLbrack == 0 {
-		return false
-	}
-	if r == '$' {
-		if s.read() == '{' {
-			return true
-		}
-		s.unread()
-	}
-	return false
-}
+func (s *scanner) scanLbrack(r rune) bool { _ = "STUB: not implemented"; return false }
 
 // scanRbrack reads the next token or Unicode character from source
 // and returns true if the closing bracket is encountered.
-func (s *scanner) scanRbrack(r rune) bool {
-	if s.mode&scanRbrack == 0 {
-		return false
-	}
-	return r == '}'
-}
+func (s *scanner) scanRbrack(r rune) bool { _ = "STUB: not implemented"; return false }
 
 // scanEscaped reads the next token or Unicode character from source
 // and returns true if it being escaped and should be skipped.
-func (s *scanner) scanEscaped(r rune) bool {
-	if s.mode&scanEscape == 0 {
-		return false
-	}
-	if r == '$' && s.shouldEscape(dollar) {
-		if s.peek() == '$' {
-			return true
-		}
-	}
-	if r == '\\' && s.shouldEscape(backslash) {
-		switch s.peek() {
-		case '/', '\\':
-			return true
-		default:
-			return false
-		}
-	}
-
-	return false
-}
+func (s *scanner) scanEscaped(r rune) bool { _ = "STUB: not implemented"; return false }
 
 //
 // scanner functions accept or reject runes.
 //
 
-func acceptRune(r rune, i int) bool {
-	return true
-}
+func acceptRune(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptIdent(r rune, i int) bool {
-	return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_'
-}
+func acceptIdent(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptColon(r rune, i int) bool {
-	return r == ':'
-}
+func acceptColon(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptOneExclamationMark(r rune, i int) bool {
-	return r == '!' && i == 1
-}
+func acceptOneExclamationMark(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptOneHash(r rune, i int) bool {
-	return r == '#' && i == 1
-}
+func acceptOneHash(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptNotClosing(r rune, i int) bool {
-	return r != '}'
-}
+func acceptNotClosing(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptHashFunc(r rune, i int) bool {
-	return r == '#' && i < 3
-}
+func acceptHashFunc(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptPercentFunc(r rune, i int) bool {
-	return r == '%' && i < 3
-}
+func acceptPercentFunc(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptDefaultFunc(r rune, i int) bool {
-	switch {
-	case i == 1 && r == ':':
-		return true
-	case i == 2 && (r == '=' || r == '-' || r == '?' || r == '+'):
-		return true
-	default:
-		return false
-	}
-}
+func acceptDefaultFunc(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptReplaceFunc(r rune, i int) bool {
-	switch {
-	case i == 1 && r == '/':
-		return true
-	case i == 2 && (r == '/' || r == '#' || r == '%'):
-		return true
-	default:
-		return false
-	}
-}
+func acceptReplaceFunc(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptOneEqual(r rune, i int) bool {
-	return i == 1 && r == '='
-}
+func acceptOneEqual(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptOneColon(r rune, i int) bool {
-	return i == 1 && r == ':'
-}
+func acceptOneColon(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func rejectColonClose(r rune, i int) bool {
-	return r != ':' && r != '}'
-}
+func rejectColonClose(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptSlash(r rune, i int) bool {
-	return r == '/'
-}
+func acceptSlash(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptNotSlash(r rune, i int) bool {
-	return r != '/'
-}
+func acceptNotSlash(r rune, i int) bool { _ = "STUB: not implemented"; return false }
 
-func acceptCasingFunc(r rune, i int) bool {
-	return (r == ',' || r == '^') && i < 3
-}
+func acceptCasingFunc(r rune, i int) bool { _ = "STUB: not implemented"; return false }

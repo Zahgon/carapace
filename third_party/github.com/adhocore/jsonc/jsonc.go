@@ -1,11 +1,7 @@
 package jsonc
 
 import (
-	"encoding/json"
-	"fmt"
 	"regexp"
-	"strconv"
-	"strings"
 )
 
 // jsonc is the structure for parsing json with comments
@@ -24,14 +20,13 @@ type jsonc struct {
 
 // new creates Jsonc struct
 func new() *jsonc {
-	return &jsonc{}
+	_ = "STUB: not implemented"
+
+	// Strip strips comments and trailing commas from input byte array
+	return nil
 }
 
-// Strip strips comments and trailing commas from input byte array
-func Strip(jsonb []byte) []byte {
-	s := new().StripS(string(jsonb))
-	return []byte(s)
-}
+func Strip(jsonb []byte) []byte { _ = "STUB: not implemented"; return nil }
 
 var sq = `'`  // single quote
 var dq = `"`  // double quote
@@ -39,179 +34,69 @@ var esc = `\` // escape
 var comma = regexp.MustCompile(`(?:,+)(\s*)$`)
 
 // StripS strips comments and trailing commas from input string
-func (j *jsonc) StripS(data string) string {
-	var oldprev, prev, char, next, s string
+func (j *jsonc) StripS(data string) string { _ = "STUB: not implemented"; return "" }
 
-	j.reset()
-	j.len = len(data)
-	quote, quoted := "", false
+// If value starts with 0x, parse as hexadecimal
 
-	for j.index < j.len {
-		oldprev, prev, char, next = j.getSegments(data, prev)
+// Trim trailing commas at the end of array or object
 
-		// If value starts with 0x, parse as hexadecimal
-		if j.isNonStringValue(char, "0") && (next == "x" || next == "X") {
-			s += j.hexadecimal(data)
-			continue
-		}
+// Append char as is (or it's compliment pair) if inside string or outside comment
 
-		quote, quoted = j.quoteKey(char, quoted)
-		s += quote
-
-		// Trim trailing commas at the end of array or object
-		if j.comment == 0 && !j.inStr && ((j.inArr && char == "]") || (j.inObj && char == "}")) {
-			s = comma.ReplaceAllString(s, `$1`)
-		}
-
-		j.checkArrayObject(char)
-
-		// Append char as is (or it's compliment pair) if inside string or outside comment
-		if j.inString(prev, char, next, oldprev) || j.outsideComment(char, next) {
-			s += j.compliment(prev, char, next)
-			continue
-		}
-
-		// Wipe out trailing whitespaces around comment
-		if j.hasCommentEnded(char, next) && char == "\n" {
-			s = strings.TrimRight(s, "\r\n\t ") + char
-		}
-	}
-	return s
-}
+// Wipe out trailing whitespaces around comment
 
 // Unmarshal strips and parses the json byte array
-func Unmarshal(jsonb []byte, v any) error {
-	return json.Unmarshal(Strip(jsonb), v)
-}
+func Unmarshal(jsonb []byte, v any) error { _ = "STUB: not implemented"; return nil }
 
 // reset resets the Jsonc with proper defaults
-func (j *jsonc) reset() {
-	j.index, j.comment = 0, 0
-	j.objDepth, j.arrDepth = 0, 0
-	j.inStr, j.inArr, j.inObj = false, false, false
-	j.last, j.strDelim = "", ""
-}
+func (j *jsonc) reset() { _ = "STUB: not implemented"; return }
 
 // getSegments gets look-behind, current and look-ahead chars
 func (j *jsonc) getSegments(json, old string) (oldprev, prev, char, next string) {
-	oldprev = old
-	if j.index > 0 {
-		prev = json[j.index-1 : j.index]
-	}
-	char = json[j.index : j.index+1]
-	if j.index < j.len-1 {
-		next = json[j.index+1 : j.index+2]
-	}
-	j.index++
-	return
+	_ = "STUB: not implemented"
+	return "", "", "", ""
 }
 
 // isNonStringValue checks if char is value outside string (or comment) and matches chars
-func (j *jsonc) isNonStringValue(char, chars string) bool {
-	return !j.inStr && j.comment == 0 && strings.ContainsAny(char, chars)
-}
+func (j *jsonc) isNonStringValue(char, chars string) bool { _ = "STUB: not implemented"; return false }
 
 // hexadecimal consumes hex (0-9a-fA-F) chars and converts to decimal string
-func (j *jsonc) hexadecimal(data string) string {
-	j.index++
-	var hexa strings.Builder
-	for j.index < j.len {
-		char := data[j.index : j.index+1]
-		if !isNumber(char, true) {
-			break
-		}
-		hexa.WriteString(char)
-		j.index++
-	}
-	dec, _ := strconv.ParseInt(hexa.String(), 16, 32)
-	return fmt.Sprintf("%d", dec)
-}
+func (j *jsonc) hexadecimal(data string) string { _ = "STUB: not implemented"; return "" }
 
 // quoteKey double quotes the unquoted object keys
 func (j *jsonc) quoteKey(char string, wasQuoted bool) (q string, quoted bool) {
-	quoted = wasQuoted
-	inKey := j.inObj && j.comment == 0 && (j.last == "{" || j.last == ",")
-	// Object key has just started without quote, so quote it
-	if !j.inStr && inKey && !strings.ContainsAny(char, "[]{}'\",/*:\r\n\t ") {
-		q = dq
-		j.inStr, quoted, j.strDelim = true, true, dq
-	}
-	// Object key has just ended and was quoted before, so quote it again to compliment
-	if j.inStr && wasQuoted && inKey && (char == ":" || char == " " || char == sq) {
-		q = dq
-		j.inStr, quoted, j.strDelim = false, false, ""
-	}
-	return
+	_ = "STUB: not implemented"
+	return "", false
 }
+
+// Object key has just started without quote, so quote it
+
+// Object key has just ended and was quoted before, so quote it again to compliment
 
 // checkArrayObject checks and sets the depth and state of array &/or object notation
-func (j *jsonc) checkArrayObject(char string) {
-	if j.isNonStringValue(char, char) {
-		// Last non whitespace char
-		if !strings.ContainsAny(char, "\r\n\t /") {
-			j.last = char
-		}
-		if char == "{" {
-			j.objDepth++
-			j.inObj, j.inArr = true, false
-		} else if j.objDepth > 0 && char == "}" {
-			j.objDepth--
-			j.inObj, j.inArr = j.objDepth > 0, j.arrDepth > 0
-		} else if char == "[" {
-			j.arrDepth++
-			j.inObj, j.inArr = false, true
-		} else if j.arrDepth > 0 && char == "]" {
-			j.arrDepth--
-			j.inObj, j.inArr = j.objDepth > 0, j.arrDepth > 0
-		}
-	}
-}
+func (j *jsonc) checkArrayObject(char string) { _ = "STUB: not implemented"; return }
+
+// Last non whitespace char
 
 func (j *jsonc) inString(prev, char, next, oldprev string) bool {
-	charnext := char + next
-	maybeStr := (char == dq || char == sq) && (!j.inStr || j.strDelim == char)
-
-	// Toggle j.inStr if j.strDelim is not escaped
-	if j.comment == 0 && maybeStr && prev != esc {
-		if !j.inStr {
-			j.strDelim = char
-		}
-		j.inStr = !j.inStr
-		return j.inStr
-	}
-	if j.inStr && (charnext == `":` || charnext == `",` || charnext == `"]` || charnext == `"}`) {
-		j.inStr = oldprev+prev != esc+esc
-	}
-	return j.inStr
+	_ = "STUB: not implemented"
+	return false
 }
+
+// Toggle j.inStr if j.strDelim is not escaped
 
 // outsideComment checks if char is outside comment
 // it also sets the state of comment
 func (j *jsonc) outsideComment(char, next string) bool {
+	_ = "STUB: not implemented"
 	// Set comment state: `//` => 1 | `/*` => 2
-	if !j.inStr && j.comment == 0 {
-		if char+next == "//" {
-			j.comment = 1
-		}
-		if char+next == "/*" {
-			j.comment = 2
-		}
-	}
-	return j.comment == 0
+	return false
 }
 
 // hasCommentEnded checks if the comment has just ended and resets the state
 func (j *jsonc) hasCommentEnded(char, next string) bool {
+	_ = "STUB: not implemented"
 	// Single line comment ends with `\n` and multiline ends with `*/`
-	singleEnded := j.comment == 1 && char == "\n"
-	multiEnded := j.comment == 2 && char+next == "*/"
-	if singleEnded || multiEnded {
-		j.comment = 0
-	}
-	if multiEnded {
-		j.index++
-	}
-	return j.comment == 0
+	return false
 }
 
 var spacesPair = map[string]string{"\n": `\n`, "\t": `\t`, "\r": `\r`}
@@ -219,48 +104,13 @@ var spacesPair = map[string]string{"\n": `\n`, "\t": `\t`, "\r": `\r`}
 // compliment appends char as is (or it's compliment pair)
 // (eg: in string boundary the compliment of single quote is double quote)
 // it also normalizes whitespaces inside string and signed &/or decimal numbers
-func (j *jsonc) compliment(prev, char, next string) string {
-	if j.inStr && char == esc && next == "\n" {
-		j.index++
-		return ""
-	} else if c, ok := spacesPair[char]; ok && j.inStr {
-		return c
-	}
+func (j *jsonc) compliment(prev, char, next string) string { _ = "STUB: not implemented"; return "" }
 
-	// Signed +ve number
-	if j.isNonStringValue(char, "+") && isNumber(next, false) {
-		return ""
-	}
+// Signed +ve number
 
-	// Decimal point number
-	if j.isNonStringValue(char, ".") {
-		prevNum, nextNum := isNumber(prev, false), isNumber(next, false)
-		if !prevNum && nextNum {
-			char = "0."
-		} else if prevNum && !nextNum {
-			char = ".0"
-		}
-		return char
-	}
+// Decimal point number
 
-	// Single quoted string
-	if j.strDelim == sq {
-		if char+next == esc+sq {
-			char = sq
-			j.index++
-		} else if prev != esc && char == sq {
-			char = dq
-		} else if char == dq {
-			char = `\"`
-		}
-	}
-	return char
-}
+// Single quoted string
 
 // isNumber checks if a string char is numeric
-func isNumber(char string, hex bool) bool {
-	if hex {
-		return strings.ContainsAny(char, "0123456789abcdefABCDEF")
-	}
-	return strings.ContainsAny(char, "0123456789")
-}
+func isNumber(char string, hex bool) bool { _ = "STUB: not implemented"; return false }

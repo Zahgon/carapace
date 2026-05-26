@@ -12,5 +12,6 @@ import (
 
 // TODO(rstambler): Delete this file when we no longer support Go 1.11.
 func lineStart(f *token.File, line int) token.Pos {
-	return f.LineStart(line)
+	_ = "STUB: not implemented"
+	return *new(token.Pos)
 }

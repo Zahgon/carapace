@@ -1,23 +1,28 @@
 package traverse
 
-import "os"
-
 // UserHomeDir returns the current user's home directory.
 func UserHomeDir(tc Context) (string, error) {
-	return os.UserHomeDir()
+	_ = "STUB: not implemented"
+	return "",
+
+		// UserCacheDir returns the default root directory to use for user-specific cached data.
+		nil
 }
 
-// UserCacheDir returns the default root directory to use for user-specific cached data.
 func UserCacheDir(tc Context) (string, error) {
-	return os.UserCacheDir()
+	_ = "STUB: not implemented"
+	return "",
+
+		// UserConfigDir returns the default root directory to use for user-specific configuration data.
+		nil
 }
 
-// UserConfigDir returns the default root directory to use for user-specific configuration data.
 func UserConfigDir(tc Context) (string, error) {
-	return os.UserConfigDir()
+	_ = "STUB: not implemented"
+	return "",
+
+		// TempDir returns the default directory to use for temporary files.
+		nil
 }
 
-// TempDir returns the default directory to use for temporary files.
-func TempDir(tc Context) (string, error) {
-	return os.TempDir(), nil
-}
+func TempDir(tc Context) (string, error) { _ = "STUB: not implemented"; return "", nil }

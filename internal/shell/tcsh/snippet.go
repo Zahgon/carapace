@@ -2,14 +2,12 @@
 package tcsh
 
 import (
-	"fmt"
-
-	"github.com/carapace-sh/carapace/pkg/uid"
 	"github.com/spf13/cobra"
 )
 
 // Snippet creates the tcsh completion script.
 func Snippet(cmd *cobra.Command) string {
+	_ = "STUB: not implemented"
 	// TODO initial version - needs to handle open quotes
-	return fmt.Sprintf("complete \"%v\" 'p@*@`echo \"$COMMAND_LINE'\"''\"'\" | xargs %v _carapace tcsh `@@' ;", cmd.Name(), uid.Executable())
+	return ""
 }

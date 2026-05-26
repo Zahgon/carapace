@@ -1,9 +1,9 @@
 package fish
 
 import (
-	"fmt"
-	"github.com/carapace-sh/carapace/internal/common"
 	"strings"
+
+	"github.com/carapace-sh/carapace/internal/common"
 )
 
 var sanitizer = strings.NewReplacer(
@@ -14,9 +14,6 @@ var sanitizer = strings.NewReplacer(
 
 // ActionRawValues formats values for fish.
 func ActionRawValues(currentWord string, meta common.Meta, values common.RawValues) string {
-	vals := make([]string, len(values))
-	for index, val := range values {
-		vals[index] = fmt.Sprintf("%v\t%v", sanitizer.Replace(val.Value), sanitizer.Replace(val.TrimmedDescription()))
-	}
-	return strings.Join(vals, "\n")
+	_ = "STUB: not implemented"
+	return ""
 }

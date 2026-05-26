@@ -65,22 +65,16 @@ type (
 )
 
 // newTextNode returns a new TextNode.
-func newTextNode(text string) *TextNode {
-	return &TextNode{Value: text}
-}
+func newTextNode(text string) *TextNode { _ = "STUB: not implemented"; return nil }
 
 // newListNode returns a new ListNode.
-func newListNode(nodes ...Node) *ListNode {
-	return &ListNode{Nodes: nodes}
-}
+func newListNode(nodes ...Node) *ListNode { _ = "STUB: not implemented"; return nil }
 
 // newFuncNode returns a new FuncNode.
-func newFuncNode(name string) *FuncNode {
-	return &FuncNode{Param: name}
-}
+func newFuncNode(name string) *FuncNode { _ = "STUB: not implemented"; return nil }
 
 // node() defines the node in a parse tree
 
-func (*TextNode) node() {}
-func (*ListNode) node() {}
-func (*FuncNode) node() {}
+func (*TextNode) node() { _ = "STUB: not implemented"; return }
+func (*ListNode) node() { _ = "STUB: not implemented"; return }
+func (*FuncNode) node() { _ = "STUB: not implemented"; return }

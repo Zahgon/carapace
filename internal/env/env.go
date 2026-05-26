@@ -1,12 +1,6 @@
 package env
 
 import (
-	"encoding/json"
-	"errors"
-	"os"
-	"strconv"
-	"strings"
-
 	"github.com/carapace-sh/carapace/internal/mock"
 )
 
@@ -30,38 +24,19 @@ const (
 	NO_COLOR                    = "NO_COLOR"                    // disable color
 )
 
-func ColorDisabled() bool {
-	if v, ok := os.LookupEnv(CARAPACE_COLOR); ok { // TODO multiple modes
-		return v == "0"
-	}
-	return getBool(NO_COLOR) || os.Getenv(CLICOLOR) == "0"
-}
+func ColorDisabled() bool { _ = "STUB: not implemented"; return false }
 
-func Experimental() bool {
-	return getBool(CARAPACE_EXPERIMENTAL)
-}
+// TODO multiple modes
 
-func Lenient() bool {
-	return getBool(CARAPACE_LENIENT)
-}
+func Experimental() bool { _ = "STUB: not implemented"; return false }
 
-func Hashdirs() string {
-	return os.Getenv(CARAPACE_ZSH_HASH_DIRS)
-}
+func Lenient() bool { _ = "STUB: not implemented"; return false }
 
-func Sandbox() (m *mock.Mock, err error) {
-	sandbox := os.Getenv(CARAPACE_SANDBOX)
-	if sandbox == "" || !isGoRun() {
-		return nil, errors.New("no sandbox")
-	}
+func Hashdirs() string { _ = "STUB: not implemented"; return "" }
 
-	err = json.Unmarshal([]byte(sandbox), &m)
-	return
-}
+func Sandbox() (m *mock.Mock, err error) { _ = "STUB: not implemented"; return nil, nil }
 
-func Log() bool {
-	return getBool(CARAPACE_LOG)
-}
+func Log() bool { _ = "STUB: not implemented"; return false }
 
 type hidden int
 
@@ -71,66 +46,36 @@ const (
 	HIDDEN_INCLUDE_CARAPACE
 )
 
-func Hidden() hidden {
-	switch parsed, _ := strconv.Atoi(os.Getenv(CARAPACE_HIDDEN)); parsed {
-	case 1:
-		return HIDDEN_EXCLUDE_CARAPACE
-	case 2:
-		return HIDDEN_INCLUDE_CARAPACE
-	default: // 0 or error
-		return HIDDEN_NONE
-	}
-}
+func Hidden() hidden { _ = "STUB: not implemented"; return *new(hidden) }
 
-func CoverDir() string {
-	return os.Getenv(CARAPACE_COVERDIR) // custom env for GOCOVERDIR so that it works together with `-coverprofile`
-}
+// 0 or error
+
+func CoverDir() string { _ = "STUB: not implemented"; return "" }
+
+// custom env for GOCOVERDIR so that it works together with `-coverprofile`
 
 func isGoRun() bool {
+	_ = "STUB: not implemented"
 	// go 1.24+: /home/rsteube/.cache/go-build/a7/a7883331b606dc3250005f1abdf4d17dea05c9eccf4ece0df5518311a118d211-d/example
 	// go 1.23-: /tmp/go-build1035720725/b001/exe/example
-	return strings.Contains(os.Args[0], "/go-build")
+	return false
 }
 
-func Match() string { // see match.Match
-	return os.Getenv(CARAPACE_MATCH)
+func Match() string {
+	_ = "STUB: not implemented" // see match.Match
+	return ""
 }
 
-func MergeFlags() (bool, bool) {
-	if _, ok := os.LookupEnv(CARAPACE_MERGEFLAGS); !ok {
-		return false, false
-	}
-	return getBool(CARAPACE_MERGEFLAGS), true
-}
+func MergeFlags() (bool, bool) { _ = "STUB: not implemented"; return false, false }
 
-func Nospace() string {
-	return os.Getenv(CARAPACE_NOSPACE)
-}
+func Nospace() string { _ = "STUB: not implemented"; return "" }
 
-func Tooltip() bool {
-	return getBool(CARAPACE_TOOLTIP)
-}
+func Tooltip() bool { _ = "STUB: not implemented"; return false }
 
-func Compline() string {
-	return os.Getenv(CARAPACE_COMPLINE)
-}
+func Compline() string { _ = "STUB: not implemented"; return "" }
 
-func Unfiltered() bool {
-	return getBool(CARAPACE_UNFILTERED)
-}
+func Unfiltered() bool { _ = "STUB: not implemented"; return false }
 
-func getBool(s string) bool {
-	switch os.Getenv(s) {
-	case "true", "1":
-		return true
-	default:
-		return false
-	}
-}
+func getBool(s string) bool { _ = "STUB: not implemented"; return false }
 
-func DescriptionLength() int {
-	if parsed, err := strconv.Atoi(os.Getenv(CARAPACE_DESCRIPTION_LENGTH)); err == nil && parsed > 0 {
-		return parsed
-	}
-	return 80
-}
+func DescriptionLength() int { _ = "STUB: not implemented"; return 0 }

@@ -13,9 +13,7 @@ var rootCmd = &cobra.Command{
 }
 
 // Execute executes cmd.
-func Execute() error {
-	return rootCmd.Execute()
-}
+func Execute() error { _ = "STUB: not implemented"; return nil }
 
 func init() {
 	rootCmd.Flags().StringP("chdir", "C", "", "change work directory")

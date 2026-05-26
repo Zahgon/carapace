@@ -1,243 +1,88 @@
 package envsubst
 
-import (
-	"strconv"
-	"strings"
-	"unicode"
-	"unicode/utf8"
-
-	"github.com/carapace-sh/carapace/third_party/github.com/drone/envsubst/path"
-)
-
 // defines a parameter substitution function.
 type substituteFunc func(string, ...string) string
 
 // toLen returns the length of string s.
-func toLen(s string, args ...string) string {
-	return strconv.Itoa(len(s))
-}
+func toLen(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // toLower returns a copy of the string s with all characters
 // mapped to their lower case.
-func toLower(s string, args ...string) string {
-	return strings.ToLower(s)
-}
+func toLower(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // toUpper returns a copy of the string s with all characters
 // mapped to their upper case.
-func toUpper(s string, args ...string) string {
-	return strings.ToUpper(s)
-}
+func toUpper(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // toLowerFirst returns a copy of the string s with the first
 // character mapped to its lower case.
-func toLowerFirst(s string, args ...string) string {
-	if s == "" {
-		return s
-	}
-	r, n := utf8.DecodeRuneInString(s)
-	return string(unicode.ToLower(r)) + s[n:]
-}
+func toLowerFirst(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // toUpperFirst returns a copy of the string s with the first
 // character mapped to its upper case.
-func toUpperFirst(s string, args ...string) string {
-	if s == "" {
-		return s
-	}
-	r, n := utf8.DecodeRuneInString(s)
-	return string(unicode.ToUpper(r)) + s[n:]
-}
+func toUpperFirst(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // toDefault returns a copy of the string s if not empty, else
 // returns a concatenation of the args without a separator.
-func toDefault(s string, args ...string) string {
-	if len(s) == 0 && len(args) > 0 {
-		// don't use any separator
-		s = strings.Join(args, "")
-	}
-	return s
-}
+func toDefault(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
+
+// don't use any separator
 
 // toSubstr returns a slice of the string s at the specified
 // length and position.
-func toSubstr(s string, args ...string) string {
-	if len(args) == 0 {
-		return s // should never happen
-	}
+func toSubstr(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
-	pos, err := strconv.Atoi(args[0])
-	if err != nil {
-		// bash returns the string if the position
-		// cannot be parsed.
-		return s
-	}
+// should never happen
 
-	if pos < 0 {
-		// if pos is negative (counts from the end) add it
-		// to length to get first character offset
-		pos = max(
-			// if negative offset exceeds the length of the string
-			// start from 0
-			len(s)+pos, 0)
-	}
+// bash returns the string if the position
+// cannot be parsed.
 
-	if len(args) == 1 {
-		if pos < len(s) {
-			return s[pos:]
-		}
-		// if the position exceeds the length of the
-		// string an empty string is returned
-		return ""
-	}
+// if pos is negative (counts from the end) add it
+// to length to get first character offset
 
-	length, err := strconv.Atoi(args[1])
-	if err != nil {
-		// bash returns the string if the length
-		// cannot be parsed.
-		return s
-	}
+// if negative offset exceeds the length of the string
+// start from 0
 
-	if pos+length >= len(s) {
-		if pos < len(s) {
-			// if the position exceeds the length of the
-			// string just return the rest of it like bash
-			return s[pos:]
-		}
-		// if the position exceeds the length of the
-		// string an empty string is returned
-		return ""
-	}
+// if the position exceeds the length of the
+// string an empty string is returned
 
-	return s[pos : pos+length]
-}
+// bash returns the string if the length
+// cannot be parsed.
+
+// if the position exceeds the length of the
+// string just return the rest of it like bash
+
+// if the position exceeds the length of the
+// string an empty string is returned
 
 // replaceAll returns a copy of the string s with all instances
 // of the substring replaced with the replacement string.
-func replaceAll(s string, args ...string) string {
-	switch len(args) {
-	case 0:
-		return s
-	case 1:
-		return strings.ReplaceAll(s, args[0], "")
-	default:
-		return strings.ReplaceAll(s, args[0], args[1])
-	}
-}
+func replaceAll(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // replaceFirst returns a copy of the string s with the first
 // instance of the substring replaced with the replacement string.
-func replaceFirst(s string, args ...string) string {
-	switch len(args) {
-	case 0:
-		return s
-	case 1:
-		return strings.Replace(s, args[0], "", 1)
-	default:
-		return strings.Replace(s, args[0], args[1], 1)
-	}
-}
+func replaceFirst(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // replacePrefix returns a copy of the string s with the matching
 // prefix replaced with the replacement string.
-func replacePrefix(s string, args ...string) string {
-	if len(args) != 2 {
-		return s
-	}
-	if strings.HasPrefix(s, args[0]) {
-		return strings.Replace(s, args[0], args[1], 1)
-	}
-	return s
-}
+func replacePrefix(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // replaceSuffix returns a copy of the string s with the matching
 // suffix replaced with the replacement string.
-func replaceSuffix(s string, args ...string) string {
-	if len(args) != 2 {
-		return s
-	}
-	if before, ok := strings.CutSuffix(s, args[0]); ok {
-		s = before
-		s = s + args[1]
-	}
-	return s
-}
+func replaceSuffix(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
 // TODO
 
-func trimShortestPrefix(s string, args ...string) string {
-	if len(args) != 0 {
-		s = trimShortest(s, args[0])
-	}
-	return s
-}
+func trimShortestPrefix(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
-func trimShortestSuffix(s string, args ...string) string {
-	if len(args) != 0 {
-		r := reverse(s)
-		rarg := reverse(args[0])
-		s = reverse(trimShortest(r, rarg))
-	}
-	return s
-}
+func trimShortestSuffix(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
-func trimLongestPrefix(s string, args ...string) string {
-	if len(args) != 0 {
-		s = trimLongest(s, args[0])
-	}
-	return s
-}
+func trimLongestPrefix(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
-func trimLongestSuffix(s string, args ...string) string {
-	if len(args) != 0 {
-		r := reverse(s)
-		rarg := reverse(args[0])
-		s = reverse(trimLongest(r, rarg))
-	}
-	return s
-}
+func trimLongestSuffix(s string, args ...string) string { _ = "STUB: not implemented"; return "" }
 
-func trimShortest(s, arg string) string {
-	var shortestMatch string
-	for i := 0; i < len(s); i++ {
-		match, err := path.Match(arg, s[0:len(s)-i])
+func trimShortest(s, arg string) string { _ = "STUB: not implemented"; return "" }
 
-		if err != nil {
-			return s
-		}
+func trimLongest(s, arg string) string { _ = "STUB: not implemented"; return "" }
 
-		if match {
-			shortestMatch = s[0 : len(s)-i]
-		}
-	}
-
-	if shortestMatch != "" {
-		return strings.TrimPrefix(s, shortestMatch)
-	}
-
-	return s
-}
-
-func trimLongest(s, arg string) string {
-	for i := 0; i < len(s); i++ {
-		match, err := path.Match(arg, s[0:len(s)-i])
-
-		if err != nil {
-			return s
-		}
-
-		if match {
-			return strings.TrimPrefix(s, s[0:len(s)-i])
-		}
-	}
-
-	return s
-}
-
-func reverse(s string) string {
-	r := []rune(s)
-	for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
-		r[i], r[j] = r[j], r[i]
-	}
-	return string(r)
-}
+func reverse(s string) string { _ = "STUB: not implemented"; return "" }

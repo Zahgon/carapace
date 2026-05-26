@@ -3,7 +3,6 @@ package match
 import (
 	"os"
 	"strconv"
-	"strings"
 )
 
 type Match int
@@ -13,27 +12,11 @@ const (
 	CASE_INSENSITIVE
 )
 
-func (m Match) Equal(s, t string) bool {
-	if m == CASE_INSENSITIVE {
-		return strings.EqualFold(s, t)
-	}
-	return s == t
+func (m Match) Equal(s, t string) bool { _ = "STUB: not implemented"; return false }
 
-}
+func (m Match) HasPrefix(s, prefix string) bool { _ = "STUB: not implemented"; return false }
 
-func (m Match) HasPrefix(s, prefix string) bool {
-	if m == CASE_INSENSITIVE {
-		return strings.HasPrefix(strings.ToLower(s), strings.ToLower(prefix))
-	}
-	return strings.HasPrefix(s, prefix)
-}
-
-func (m Match) TrimPrefix(s, prefix string) string {
-	if m.HasPrefix(s, prefix) {
-		return s[len(prefix):]
-	}
-	return s
-}
+func (m Match) TrimPrefix(s, prefix string) string { _ = "STUB: not implemented"; return "" }
 
 var match = CASE_SENSITIVE
 
@@ -44,14 +27,8 @@ func init() {
 	}
 }
 
-func Equal(s, t string) bool {
-	return match.Equal(s, t)
-}
+func Equal(s, t string) bool { _ = "STUB: not implemented"; return false }
 
-func HasPrefix(s, prefix string) bool {
-	return match.HasPrefix(s, prefix)
-}
+func HasPrefix(s, prefix string) bool { _ = "STUB: not implemented"; return false }
 
-func TrimPrefix(s, prefix string) string {
-	return match.TrimPrefix(s, prefix)
-}
+func TrimPrefix(s, prefix string) string { _ = "STUB: not implemented"; return "" }
